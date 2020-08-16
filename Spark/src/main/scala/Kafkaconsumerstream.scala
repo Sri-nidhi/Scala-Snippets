@@ -1,6 +1,4 @@
-
 object Kafkaconsumerstream {
-
   def main(args: Array[String]): Unit = {
 
     val spark: SparkSession = SparkSession.builder()
@@ -20,6 +18,8 @@ object Kafkaconsumerstream {
     val df2 = df.selectExpr("CAST(key AS STRING)",
       "CAST(value AS STRING)","topic")
     df2.show(false)
+    df2.write.format("org.apache.spark.sql.cassandra").options(Map( "table" -> "words_copy", "keyspace" -> "test")).save()
   }
 
 }
+
